@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: node-app
+    build:
+      context: .
+      target: base
+    ports:
+      - 4000:4000
+    environment:
+      - PORT=4000
+      - DBSTRING=mongodb://mongo:27017/racoons
+    volumes:
+      #attaching current src code folder to the app folder in the container
+      - ./:/app
+    command: npm run dev
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+volumes:
+  mongodb:
+  mongodb_config:
